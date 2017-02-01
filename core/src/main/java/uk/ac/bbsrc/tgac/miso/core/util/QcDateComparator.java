@@ -37,7 +37,7 @@ import uk.ac.bbsrc.tgac.miso.core.data.QC;
  * @date 01/12/11
  * @since 0.1.3
  */
-public class DateComparator<T extends QC> implements Comparator<T> {
+public class QcDateComparator<T extends QC> implements Comparator<T> {
 
   @Override
   public int compare(QC object1, QC object2) {

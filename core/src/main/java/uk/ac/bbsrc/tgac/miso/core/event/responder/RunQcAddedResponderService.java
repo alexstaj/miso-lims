@@ -43,7 +43,7 @@ import uk.ac.bbsrc.tgac.miso.core.event.impl.DefaultAlert;
 import uk.ac.bbsrc.tgac.miso.core.event.model.RunEvent;
 import uk.ac.bbsrc.tgac.miso.core.event.type.MisoEventType;
 import uk.ac.bbsrc.tgac.miso.core.exception.AlertingException;
-import uk.ac.bbsrc.tgac.miso.core.util.DateComparator;
+import uk.ac.bbsrc.tgac.miso.core.util.QcDateComparator;
 
 /**
  * uk.ac.bbsrc.tgac.miso.core.event.responder
@@ -86,7 +86,7 @@ public class RunQcAddedResponderService extends AbstractResponderService<RunEven
 
     List<RunQC> lqc = new ArrayList<>(r.getRunQCs());
     if (!lqc.isEmpty()) {
-      Collections.sort(lqc, new DateComparator<>());
+      Collections.sort(lqc, new QcDateComparator<>());
       lastAdded = lqc.get(lqc.size() - 1);
     }
 
