@@ -12,11 +12,11 @@
  *
  * MISO is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with MISO.  If not, see <http://www.gnu.org/licenses/>.
+ * along with MISO. If not, see <http://www.gnu.org/licenses/>.
  *
  * *********************************************************************
  */
@@ -49,12 +49,10 @@ public class QcDateComparator<T extends QC> implements Comparator<T> {
     if (date1 == null) return 1;
     if (date2 == null) return -1;
 
-    if (date1.before(date2)) {
-      return -1;
-    } else if (date1.after(date2)) {
-      return 1;
-    } else {
+    int result = date1.compareTo(date2);
+    if (result == 0) {
       return Long.compare(object1.getId(), object2.getId());
     }
+    return result;
   }
 }
