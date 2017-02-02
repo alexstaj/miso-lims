@@ -41,7 +41,7 @@ import uk.ac.bbsrc.tgac.miso.core.data.type.PlatformType;
  */
 @MappedSuperclass
 public abstract class AbstractPlatform implements Platform {
-  public static final Long UNSAVED_ID = 0L;
+  private static final Long UNSAVED_ID = 0L;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "name")
