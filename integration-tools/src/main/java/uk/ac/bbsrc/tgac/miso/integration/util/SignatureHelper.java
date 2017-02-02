@@ -12,11 +12,11 @@
  *
  * MISO is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with MISO.  If not, see <http://www.gnu.org/licenses/>.
+ * along with MISO. If not, see <http://www.gnu.org/licenses/>.
  *
  * *********************************************************************
  */
@@ -24,13 +24,8 @@
 package uk.ac.bbsrc.tgac.miso.integration.util;
 
 import java.security.InvalidKeyException;
-import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.Signature;
 import java.security.SignatureException;
-import java.security.spec.EncodedKeySpec;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
@@ -84,14 +79,14 @@ public class SignatureHelper {
     return calculateHMAC(sortedUrl, privateKey);
   }
 
-  public static String createSignatureFromRequest(HttpServletRequest request, String privateKey) throws Exception {
+  private static String createSignatureFromRequest(HttpServletRequest request, String privateKey) throws Exception {
     String sortedUrl = createSortedUrl(request);
 
     log.debug("CREATING SIGNATURE FROM REQUEST: " + sortedUrl + " :: " + privateKey);
     return calculateHMAC(sortedUrl, privateKey);
   }
 
-  public static String createSortedUrl(String url, TreeMap<String, String> headersAndParams) {
+  private static String createSortedUrl(String url, TreeMap<String, String> headersAndParams) {
     // build the url with headers and params sorted
     String params = "";
     for (String key : headersAndParams.keySet()) {
@@ -107,14 +102,15 @@ public class SignatureHelper {
     return url + params;
   }
 
-  public static String createSortedUrl(HttpServletRequest request) {
+  private static String createSortedUrl(HttpServletRequest request) {
     // use a TreeMap to sort the headers and parameters
     TreeMap<String, String> headersAndParams = new TreeMap<>();
 
     // load header values we care about
-    Enumeration e = request.getHeaderNames();
+    @SuppressWarnings("unchecked")
+    Enumeration<String> e = request.getHeaderNames();
     while (e.hasMoreElements()) {
-      String key = (String) e.nextElement();
+      String key = e.nextElement();
       if (SIGNATURE_KEYWORDS.contains(key)) {
         log.debug("FOUND HEADER: " + key);
         headersAndParams.put(key, request.getHeader(key));
@@ -124,7 +120,7 @@ public class SignatureHelper {
     return createSortedUrl(request.getContextPath() + request.getServletPath() + request.getPathInfo(), headersAndParams);
   }
 
-  public static String calculateHMAC(String data, String key) throws java.security.SignatureException {
+  private static String calculateHMAC(String data, String key) throws java.security.SignatureException {
     String result;
     try {
       // get an hmac_sha1 key from the raw key bytes
@@ -144,32 +140,6 @@ public class SignatureHelper {
       throw new SignatureException("Failed to generate HMAC : " + e.getMessage());
     }
     return result;
-  }
-
-  @Deprecated
-  private static PublicKey decodePublicKey(String publicKey) throws Exception {
-    KeyFactory keyFactory = KeyFactory.getInstance(DSA_ALGORITHM);
-    byte[] publicKeyBytes = Base64.decodeBase64(publicKey);
-    EncodedKeySpec publicKeySpec = new PKCS8EncodedKeySpec(publicKeyBytes);
-    return keyFactory.generatePublic(publicKeySpec);
-  }
-
-  @Deprecated
-  public static boolean validateSignature(String url, String signatureString, String apiKey) throws InvalidKeyException, Exception {
-    if (url == null || signatureString == null || apiKey == null) {
-      throw new InvalidKeyException("Cannot verify signature when url, signature or api key are null!");
-    }
-    log.debug("VALIDATING: " + url + " :: " + signatureString + " :: " + apiKey);
-
-    Signature signature = Signature.getInstance(HMAC_SHA1_ALGORITHM);
-    signature.initVerify(decodePublicKey(apiKey));
-    signature.update(url.getBytes());
-    try {
-      return signature.verify(Base64.decodeBase64(signatureString));
-    } catch (SignatureException e) {
-      log.error("FAILED TO VERIFY SIGNATURE: " + signature.toString(), e);
-      return false;
-    }
   }
 
   public static boolean validateSignature(HttpServletRequest request, String publicKey, String signature)
