@@ -2,10 +2,11 @@ package uk.ac.bbsrc.tgac.miso.dto;
 
 import java.net.URI;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class LibraryDto {
 
   private String alias;
@@ -160,12 +161,12 @@ public class LibraryDto {
     this.libraryId = libraryId;
   }
 
-  @JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   public void setIdentificationBarcode(String identificationBarcode) {
     this.identificationBarcode = identificationBarcode;
   }
 
-  @JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   public void setLastModified(String lastModified) {
     this.lastModified = lastModified;
   }
@@ -186,7 +187,7 @@ public class LibraryDto {
     this.libraryTypeId = libraryTypeId;
   }
 
-  @JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   public void setLocationLabel(String locationLabel) {
     this.locationLabel = locationLabel;
   }
@@ -223,32 +224,32 @@ public class LibraryDto {
     this.platformName = platformName;
   }
 
-  @JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   public void setQcPassed(Boolean qcPassed) {
     this.qcPassed = qcPassed;
   }
 
-  @JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   public void setIndex1Id(Long index1Id) {
     this.index1Id = index1Id;
   }
 
-  @JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   public void setIndex2Id(Long index2Id) {
     this.index2Id = index2Id;
   }
 
-  @JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   public void setIndex1Label(String index1Label) {
     this.index1Label = index1Label;
   }
 
-  @JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   public void setIndex2Label(String index2Label) {
     this.index2Label = index2Label;
   }
 
-  @JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   public void setIndexFamilyName(String indexFamilyName) {
     this.indexFamilyName = indexFamilyName;
   }

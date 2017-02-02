@@ -25,7 +25,7 @@ package uk.ac.bbsrc.tgac.miso.runstats.server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.integration.Message;
+import org.springframework.messaging.Message;
 import uk.ac.bbsrc.tgac.miso.core.util.LimsUtils;
 import uk.ac.bbsrc.tgac.miso.tools.run.util.FileSetTransformer;
 

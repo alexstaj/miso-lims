@@ -406,7 +406,7 @@ public class ReportingControllerHelperService {
     String html = null;
     JSONArray a = JSONArray.fromObject(json.get("form"));
     List<Reportable> reportables = new ArrayList<Reportable>();
-    List<String> options = new ArrayList();
+    List<String> options = new ArrayList<String>();
 
     for (JSONObject j : (Iterable<JSONObject>) a) {
       if (j.getString("name").equals("incChart")) {

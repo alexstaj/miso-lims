@@ -5,17 +5,17 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
-import org.codehaus.jackson.map.SerializerProvider;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
 import com.eaglegenomics.simlims.core.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import uk.ac.bbsrc.tgac.miso.core.security.SecurableByProfile;
 
@@ -26,7 +26,8 @@ import uk.ac.bbsrc.tgac.miso.core.security.SecurableByProfile;
  * 
  * A Box usually has dimensions 8 by 12. (A-H, 1-12, A01 through H12)
  */
-@JsonSerialize(typing = JsonSerialize.Typing.STATIC, include = JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(typing = JsonSerialize.Typing.STATIC)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties({ "securityProfile", "2DArray", "lastModifier", "changeLog", "positionCount", "freeCount", "tubeCount" })
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public interface Box extends SecurableByProfile, Barcodable, Locatable, Deletable, ChangeLoggable {
@@ -35,7 +36,7 @@ public interface Box extends SecurableByProfile, Barcodable, Locatable, Deletabl
     public void serialize(Map<String, Boxable> map, JsonGenerator jgen, SerializerProvider provider)
         throws IOException, JsonProcessingException {
       ObjectMapper mapper = new ObjectMapper();
-      ObjectWriter writer = mapper.writerWithType(Boxable.class);
+      ObjectWriter writer = mapper.writerFor(Boxable.class);
       jgen.writeStartObject();
       for (String key : map.keySet()) {
         jgen.writeFieldName(key);

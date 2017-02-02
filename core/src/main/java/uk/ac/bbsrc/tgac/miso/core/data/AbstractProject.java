@@ -56,6 +56,7 @@ import org.slf4j.LoggerFactory;
 import com.eaglegenomics.simlims.core.Group;
 import com.eaglegenomics.simlims.core.SecurityProfile;
 import com.eaglegenomics.simlims.core.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.common.collect.Lists;
 
 import uk.ac.bbsrc.tgac.miso.core.data.impl.ProjectOverview;
@@ -96,10 +97,13 @@ public abstract class AbstractProject implements Project {
   private long projectId = AbstractProject.UNSAVED_ID;
 
   @OneToMany(targetEntity = SampleImpl.class, fetch = FetchType.LAZY, mappedBy = "project")
+  @JsonManagedReference
   private Collection<Sample> samples = new HashSet<>();
   @OneToMany(targetEntity = StudyImpl.class, fetch = FetchType.LAZY, mappedBy = "project")
+  @JsonManagedReference
   private Collection<Study> studies = new HashSet<>();
   @OneToMany(targetEntity = ProjectOverview.class, mappedBy = "project", cascade = CascadeType.ALL)
+  @JsonManagedReference
   private Collection<ProjectOverview> overviews = new HashSet<>();
   @ElementCollection
   @CollectionTable(name = "Project_Issues", joinColumns = { @JoinColumn(name = "project_projectId") })
@@ -233,7 +237,7 @@ public abstract class AbstractProject implements Project {
   public void setSamples(Collection<Sample> samples) {
     this.samples = samples;
     try {
-      Collections.sort(Lists.newArrayList(this.samples), new AliasComparator<Sample>(Sample.class));
+      Collections.sort(Lists.newArrayList(this.samples), new AliasComparator<>(Sample.class));
     } catch (NoSuchMethodException e) {
       log.error("set samples", e);
     }
@@ -243,7 +247,7 @@ public abstract class AbstractProject implements Project {
   public void addSample(Sample sample) {
     this.samples.add(sample);
     try {
-      Collections.sort(Lists.newArrayList(this.samples), new AliasComparator<Sample>(Sample.class));
+      Collections.sort(Lists.newArrayList(this.samples), new AliasComparator<>(Sample.class));
     } catch (NoSuchMethodException e) {
       log.error("set sample", e);
     }
@@ -253,7 +257,7 @@ public abstract class AbstractProject implements Project {
   public void setStudies(Collection<Study> studies) {
     this.studies = studies;
     try {
-      Collections.sort(Lists.newArrayList(this.studies), new AliasComparator<Study>(Study.class));
+      Collections.sort(Lists.newArrayList(this.studies), new AliasComparator<>(Study.class));
     } catch (NoSuchMethodException e) {
       log.error("set studies", e);
     }
