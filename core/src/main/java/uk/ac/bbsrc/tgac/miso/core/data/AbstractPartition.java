@@ -47,7 +47,7 @@ import uk.ac.bbsrc.tgac.miso.core.security.SecurableByProfile;
  */
 @MappedSuperclass
 public abstract class AbstractPartition implements Partition {
-  private static final Long UNSAVED_ID = 0L;
+  public static final Long UNSAVED_ID = 0L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
